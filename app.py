@@ -7,6 +7,23 @@ st.title("Kiln Firing Log Viewer")
 uploaded_file = st.file_uploader("Upload Skutt CSV Log", type=['csv'])
 
 if uploaded_file is not None:
+    file_name = uploaded_file.name.replace(".csv", "")
+    if "-@" in file_name:
+        name_part, datetime_part = file_name.split("-@")
+        program_name = name_part.replace("-"," ")
+        raw_date_segments = datetime_part.replace("T", "-").split("-")
+        date_only = f"{raw_date_segments[0]}-{raw_date_segments[1]}-{raw_date_segments[2]}"
+
+        try:
+            formatted_date = pd.to_datetime(date_only).strftime("%B %d, %Y")
+        except: 
+            formatted_date = date_only
+    else:
+        program_name = "Custom Program"
+        formatted_date = "Unknown Date"
+
+    st.info(f"**Program Name:** {program_name} &nbsp; | &nbsp; **Date:** {formatted_date}")
+    
     df = pd.read_csv(uploaded_file, skipinitialspace=True)
     df = df.dropna(subset=['t30s']).copy()
 
