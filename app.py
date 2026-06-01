@@ -8,9 +8,9 @@ uploaded_file = st.file_uploader("Upload Skutt CSV Log", type=['csv'])
 
 if uploaded_file is not None:
     file_name = uploaded_file.name.replace(".csv", "")
-    if "-@" in file_name:
-        name_part, datetime_part = file_name.split("-@")
-        program_name = name_part.replace("-"," ")
+    if "@" in file_name:
+        name_part, datetime_part = file_name.split("@")
+        program_name = name_part.replace("-"," ").strip()
         raw_date_segments = datetime_part.replace("T", "-").split("-")
         date_only = f"{raw_date_segments[0]}-{raw_date_segments[1]}-{raw_date_segments[2]}"
 
